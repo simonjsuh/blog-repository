@@ -15,9 +15,7 @@
 //    return view('welcome');
 //});
 
-Route::get('/', function() {
-  return view('blog/home');
-});
+Route::get('/', 'BlogController@publicHomePage');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
