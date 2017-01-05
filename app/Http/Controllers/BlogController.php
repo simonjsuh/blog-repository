@@ -68,7 +68,14 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+      $post = Blog::find($id);
+      
+      $data = array(
+        'id' => $id,
+        'post' => $post
+      );
+      
+      return view('blog.view_post', $data);
     }
 
     /**
