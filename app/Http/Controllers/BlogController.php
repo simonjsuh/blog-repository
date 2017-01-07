@@ -98,7 +98,15 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $post = Blog::find($id);
+      
+      $commentCount = $request->commentCount;
+      
+      $post->comment_count = $commentCount;
+      
+      $post->save();
+      
+      return redirect()->route('blogs.show', ['id'=>$id]);
     }
 
     /**
