@@ -24,8 +24,15 @@
           <th>{{ $post->id }}</th>
           <td>{{ $post->title }}</td>
           <td>{{ $post->body }}</td>
-          <td>Edit</td>
-          <td>Delete</td>
+          <td><a class="btn btn-info" href="{{ route('blogs.edit', ['id'=>$post->id]) }}">Edit</a></td>
+          <td>
+            <form action="{{ route('blogs.destroy', ['id'=>$post->id]) }}" method="POST">
+              {{ csrf_field() }}
+              <input type="hidden" name="_method" value="DELETE">
+
+              <input type="submit" value='Delete' class="btn btn-danger">
+            </form>
+          </td>
         </tr>
       @endforeach
     </tbody>

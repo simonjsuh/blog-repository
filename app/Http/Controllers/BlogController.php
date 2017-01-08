@@ -10,7 +10,7 @@ class BlogController extends Controller
 {
     public function publicHomePage(Request $request) {
       if ($request->input('type') == 'recentPosts') {
-        $posts = Blog::orderBy('created_at', 'asc')->paginate(10);
+        $posts = Blog::orderBy('created_at', 'desc')->paginate(10);
         $organization = 'Top 10 Most Recent Posts';
       } else if ($request->input('type') == 'mostCommented') {
         $posts = Blog::orderBy('comment_count', 'desc')->paginate(10);
@@ -18,6 +18,9 @@ class BlogController extends Controller
       } else if ($request->input('type') == 'mostVisited') {
         $posts = Blog::orderBy('visit_count', 'desc')->paginate(10);
         $organization = 'Top 10 Most Visited Posts';
+      } else {
+        $posts = Blog::orderBy('created_at', 'desc')->paginate(10);
+        $organization = 'Top 10 Most Recent Posts';
       }
       
       $data = array(
@@ -68,6 +71,8 @@ class BlogController extends Controller
       $blog->user_id = $postUserId;
       $blog->title = $postTitle;
       $blog->body = $postBody;
+      $blog->comment_count = 0;
+      $blog->visit_count = 0;
       
       $blog->save();
 
@@ -100,7 +105,9 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+      $post = Blog::find($id);
+      
+      return view('adminPanel.edit', ['post'=>$post]);
     }
 
     /**
@@ -114,15 +121,33 @@ class BlogController extends Controller
     {
       $post = Blog::find($id);
       
-      $commentCount = $request->commentCount;
-      $visitCount = $request->visitCount;
+      if (isset($request->commentCount)) {
+        $commentCount = $request->commentCount;
+        $post->comment_count = $commentCount;
+      }
       
-      $post->comment_count = $commentCount;
-      $post->visit_count = $visitCount;
+      if (isset($request->visitCount)) {
+        $visitCount = $request->visitCount;
+        $post->visit_count = $visitCount;
+      }
+
+      if (isset($request->title)) {
+        $postTitle = $request->title;
+        $post->title = $postTitle;
+      }
+      
+      if (isset($request->body)) {
+        $postBody = $request->body;
+        $post->body = $postBody;
+      }
       
       $post->save();
       
-      return redirect()->route('blogs.show', ['id'=>$id]);
+      if (isset($request->editForm)) {
+        return redirect()->route('blogs.index');
+      } else {
+        return redirect()->route('blogs.show', ['id'=>$id]);
+      }
     }
 
     /**
@@ -133,6 +158,10 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $post = Blog::find($id);
+      
+      $post->delete();
+      
+      return redirect()->route('blogs.index');
     }
 }
