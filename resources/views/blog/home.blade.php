@@ -49,10 +49,10 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort Posts By <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a id="recentPosts" href="">Top 10 Most Recent Posts</a></li>
+            <li><a id="recentPosts" href="{{ route('getPublic', ['type'=>'recentPosts']) }}">Top 10 Most Recent Posts</a></li>
             {{--<li><a href="">Top 10 Liked Posts</a></li>--}}
-            <li><a id="commentedPosts" href="">Top 10 Most Commented Posts</a></li>
-            <li><a id="visitedPosts" href="">Top 10 Most Visited Posts</a></li>
+            <li><a id="commentedPosts" href="{{ route('getPublic', ['type'=>'mostCommented']) }}">Top 10 Most Commented Posts</a></li>
+            <li><a id="visitedPosts" href="{{ route('getPublic', ['type'=>'mostVisited']) }}">Top 10 Most Visited Posts</a></li>
           </ul>
         </li>
       </ul>
@@ -67,7 +67,7 @@
 
   {{--container for containing top 10 posts in specified Post categories--}}
   <div>
-    <h2>Top 10 Most Recent Blogs</h2>
+    <h2>{{ $organization }}</h2>
 
    
     

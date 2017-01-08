@@ -8,11 +8,24 @@ use Auth;
 
 class BlogController extends Controller
 {
-    public function publicHomePage() {
-//      $posts = Blog::orderBy('comment_count', 'desc')->paginate(10);
-      $posts = Blog::orderBy('created_at', 'asc')->paginate(10);
+    public function publicHomePage(Request $request) {
+      if ($request->input('type') == 'recentPosts') {
+        $posts = Blog::orderBy('created_at', 'asc')->paginate(10);
+        $organization = 'Top 10 Most Recent Posts';
+      } else if ($request->input('type') == 'mostCommented') {
+        $posts = Blog::orderBy('comment_count', 'desc')->paginate(10);
+        $organization = 'Top 10 Most Commented Posts';
+      } else if ($request->input('type') == 'mostVisited') {
+        $posts = Blog::orderBy('visit_count', 'desc')->paginate(10);
+        $organization = 'Top 10 Most Visited Posts';
+      }
       
-      return view('blog/home', ['posts'=>$posts]);
+      $data = array(
+        'posts' => $posts,
+        'organization' => $organization
+      );
+      
+      return view('blog/home', $data);
     }  
   
     /**
