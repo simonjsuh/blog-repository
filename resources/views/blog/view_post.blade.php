@@ -12,6 +12,7 @@
     <input type="hidden" name="_method" value="PUT">
     
     <input type="text" name="commentCount" id="fbFormCommentCount">
+    <input type="text" name="visitCount" id="hiddenFormPostVisitCounter" value="{{ $post->visit_count }}">
   </form>
   
   <div class="row">
@@ -32,7 +33,13 @@
     setTimeout(function() {
       document.getElementById('fbFormCommentCount').value = fbCommentCount[0].innerHTML;
       
-      var $formVar = $('form');
+      var $formVar = $('#fbCommentCountForm');
+      
+      let visitCount = document.getElementById('hiddenFormPostVisitCounter').value;
+      
+      let visitCountPlusOne = parseInt(visitCount) + 1;
+
+      document.getElementById('hiddenFormPostVisitCounter').value = visitCountPlusOne;
       
       $.ajax({
         url: $formVar.prop('{{ route('blogs.update', ['id'=>$id]) }}'),
@@ -40,6 +47,16 @@
         data: $formVar.serialize(),
       });
       }, 1000);
+    
+    {{--setTimeout(function() {--}}
+      {{--let $visitCountForm = $('#formPostVisitCount');--}}
+      {{----}}
+      {{--$.ajax({--}}
+        {{--url: $visitCountForm.prop('{{ route('blogs.update', ['id'=>$id]) }}'),--}}
+        {{--method: 'PUT',--}}
+        {{--data: $visitCountForm.serialize()--}}
+      {{--});--}}
+    {{--}, 1500);--}}
 
     {{--$('form').on('submit', function(e){--}}
       {{--e.preventDefault();--}}

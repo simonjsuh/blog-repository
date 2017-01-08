@@ -9,7 +9,8 @@ use Auth;
 class BlogController extends Controller
 {
     public function publicHomePage() {
-      $posts = Blog::paginate(10);
+//      $posts = Blog::orderBy('comment_count', 'desc')->paginate(10);
+      $posts = Blog::orderBy('created_at', 'asc')->paginate(10);
       
       return view('blog/home', ['posts'=>$posts]);
     }  
@@ -101,8 +102,10 @@ class BlogController extends Controller
       $post = Blog::find($id);
       
       $commentCount = $request->commentCount;
+      $visitCount = $request->visitCount;
       
       $post->comment_count = $commentCount;
+      $post->visit_count = $visitCount;
       
       $post->save();
       

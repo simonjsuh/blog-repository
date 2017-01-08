@@ -49,10 +49,10 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort Posts By <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="">Top 10 Most Recent Posts</a></li>
+            <li><a id="recentPosts" href="">Top 10 Most Recent Posts</a></li>
             {{--<li><a href="">Top 10 Liked Posts</a></li>--}}
-            <li><a href="">Top 10 Most Commented Posts</a></li>
-            <li><a href="">Top 10 Most Visited Posts</a></li>
+            <li><a id="commentedPosts" href="">Top 10 Most Commented Posts</a></li>
+            <li><a id="visitedPosts" href="">Top 10 Most Visited Posts</a></li>
           </ul>
         </li>
       </ul>
@@ -102,6 +102,11 @@
       <div class="well well-lg">
         <h3>{{ $post->title }}</h3>
         <p>{{ $post->body }}</p>
+        <br>
+        <br>
+        <p>Visit Count: {{ $post->visit_count }}</p>
+        <p>Posted Date: {{ date('F d, Y', strtotime($post->created_at)) }} at {{ date('g:ia', strtotime($post->created_at)) }}</p>
+        <p>Comment Count: {{ $post->comment_count }}</p>
         <a class="btn btn-default pull-right" href="{{ route('blogs.show', ['id'=>$post->id]) }}">View Post</a>
         &nbsp;
       </div>
